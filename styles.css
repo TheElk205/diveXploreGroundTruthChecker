@@ -259,6 +259,20 @@ tbody tr:hover {
     background: #5568d3;
 }
 
+/* Footer */
+.footer {
+    padding: 20px 30px;
+    text-align: center;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.footer p {
+    margin: 0;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     body {
