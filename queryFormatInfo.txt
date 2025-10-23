@@ -1,0 +1,13 @@
+Columns from left to right:
+
+ Query
+ 
+ junk 
+
+ shotID 
+
+ sampling-stratum (1(top),2,3) 
+
+ judgment (-1 not in judged sample, 
+            1 shot contains concept, 
+            0 shot doesn't contain concept)
