@@ -20,6 +20,9 @@ let queries = new Map(); // Map of queryId -> queryString
 let allResults = []; // All results from the current result file
 let filteredResults = []; // Results after filtering
 
+// Intersection Observer for lazy loading thumbnails
+let thumbnailObserver = null;
+
 // Event listeners
 datasetSelect.addEventListener('change', loadQueries);
 querySelect.addEventListener('change', loadResultsForQuery);
@@ -29,7 +32,41 @@ stratumFilters.forEach(cb => cb.addEventListener('change', applyFilters));
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
     loadQueries();
+    initThumbnailObserver();
 });
+
+// Initialize Intersection Observer for lazy loading thumbnails
+function initThumbnailObserver() {
+    thumbnailObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                const src = img.dataset.src;
+                if (src) {
+                    img.src = src;
+                    img.removeAttribute('data-src');
+                    thumbnailObserver.unobserve(img);
+                }
+            }
+        });
+    }, {
+        rootMargin: '50px' // Start loading slightly before image comes into view
+    });
+}
+
+// Extract folder number from shotId (e.g., "shot00008_16" -> "00008")
+function extractFolderFromShotId(shotId) {
+    const match = shotId.match(/shot(\d+)_/);
+    return match ? match[1] : null;
+}
+
+// Generate thumbnail path from shotId
+function getThumbnailPath(shotId) {
+    const folder = extractFolderFromShotId(shotId);
+    if (!folder) return null;
+
+    return `thumbnails/${folder}/${shotId}.png`;
+}
 
 // Load queries from selected dataset
 async function loadQueries() {
@@ -219,7 +256,7 @@ function renderTable() {
     if (filteredResults.length === 0) {
         const tr = document.createElement('tr');
         const td = document.createElement('td');
-        td.colSpan = 5;
+        td.colSpan = 6; // Updated colspan for thumbnail column
         td.textContent = 'No results match the current filters';
         td.style.textAlign = 'center';
         td.style.fontStyle = 'italic';
@@ -237,6 +274,34 @@ function renderTable() {
             return td;
         };
 
+        // Create thumbnail cell
+        const thumbnailCell = document.createElement('td');
+        thumbnailCell.className = 'thumbnail-cell';
+
+        const thumbnailPath = getThumbnailPath(result.shotId);
+        if (thumbnailPath) {
+            const img = document.createElement('img');
+            img.className = 'thumbnail';
+            img.dataset.src = thumbnailPath; // Use data-src for lazy loading
+            img.alt = result.shotId;
+
+            // Add error handler for missing images
+            img.addEventListener('error', function() {
+                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="75"%3E%3Crect width="100" height="75" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-size="12"%3ENo image%3C/text%3E%3C/svg%3E';
+                this.style.cursor = 'default';
+            });
+
+            thumbnailCell.appendChild(img);
+
+            // Observe the image for lazy loading
+            if (thumbnailObserver) {
+                thumbnailObserver.observe(img);
+            }
+        } else {
+            thumbnailCell.textContent = 'N/A';
+        }
+
+        tr.appendChild(thumbnailCell);
         tr.appendChild(createCell(result.queryId));
         tr.appendChild(createCell(result.junk));
         tr.appendChild(createCell(result.shotId));
