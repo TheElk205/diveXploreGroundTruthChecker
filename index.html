@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Results Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DiveXplore Ground Truth Checker</h1>
+            <p class="subtitle">Query Results Viewer</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="datasetSelect">Select Dataset:</label>
+                <select id="datasetSelect">
+                    <option value="adHocMainTaskQueries">Ad Hoc Main Task Queries</option>
+                    <option value="adHocProgressTaskQueries">Ad Hoc Progress Task Queries</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="querySelect">Select Query:</label>
+                <select id="querySelect" disabled>
+                    <option value="">Loading queries...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filters" id="filtersContainer" style="display: none;">
+            <h3>Filters</h3>
+            <div class="filter-group">
+                <label>Judgement:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="filter-judgement" value="-1" checked> -1</label>
+                    <label><input type="checkbox" class="filter-judgement" value="0" checked> 0</label>
+                    <label><input type="checkbox" class="filter-judgement" value="1" checked> 1</label>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label>Sampling-Stratum:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="filter-stratum" value="1" checked> 1</label>
+                    <label><input type="checkbox" class="filter-stratum" value="2" checked> 2</label>
+                    <label><input type="checkbox" class="filter-stratum" value="3" checked> 3</label>
+                </div>
+            </div>
+            <div class="filter-stats">
+                <span id="resultCount">0 results</span>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            <p>Loading data...</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            <p>Error loading data. Please ensure the TSV files are available.</p>
+        </div>
+
+        <div id="queryInfo" class="query-info" style="display: none;">
+            <h3>Query Details</h3>
+            <p><strong>Query ID:</strong> <span id="queryId"></span></p>
+            <p><strong>Query String:</strong> <span id="queryString"></span></p>
+        </div>
+
+        <div id="tableContainer" class="table-container" style="display: none;">
+            <h2>Results</h2>
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Query ID</th>
+                        <th>Junk</th>
+                        <th>Shot ID</th>
+                        <th>Sampling-Stratum</th>
+                        <th>Judgement</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
