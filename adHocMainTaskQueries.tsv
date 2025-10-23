@@ -1,0 +1,35 @@
+###################################################################
+A note regarding query 674: Find shots of a parachutist descending
+towards a field on the ground in the daytime
+
+In assessing this query by annotators, it seems that assessors were
+more liberal and didn't take into account the satisfaction of all query
+conditions to determine if the shot can be judged as relevant (true positive)
+or non-relevant (false positive). Thus in the provided ground truth file
+(avs.qrels.main.tv21) there can be shots that include a parachutist but
+not necessarily descending, or perhaps the field or ground not visible, etc.
+Thus systems should be more careful when applying this ground truth as
+training data for this query.
+We apologize for this inconvenience and thanks for understanding.
+##################################################################
+
+661 Find shots of a hang glider floating in the sky on a sunny day
+662 Find shots of a woman wearing sleeveless top
+663 Find shots of a person with a tattoo on their arm
+664 Find shots of city street where ground is covered by snow
+665 Find shots of an adult person wearing a backpack and walking on a sidewalk
+666 Find shots of a man wearing a blue jacket
+667 Find shots of a person looking at themselves in a mirror
+668 Find shots of a person wearing an apron indoors
+669 Find shots of a woman holding a book
+670 Find shots of a person painting on a canvas
+671 Find shots of a man behind a pub bar or club bar
+672 Find shots of a person wearing a cap backwards
+673 Find shots of a man pointing with his finger
+674 Find shots of a parachutist descending towards a field on the ground in the daytime
+675 Find shots of two or more ducks swimming in a pond
+676 Find shots of a white dog
+677 Find shots of two boxers in a ring
+678 Find shots of a man sitting on a barber chair in a shop
+679 Find shots of a ladder with less than 6 steps
+680 Find shots of a bow tie
